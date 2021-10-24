@@ -2,8 +2,8 @@
 let addBtn = document.getElementById('addBtn');
 showNotes();
 addBtn.addEventListener('click',(e)=>{
-    let text = document.getElementById('addTxt');
-
+    let addText = document.getElementById('addTxt');
+    let addTitle = document.getElementById('addTitle');
     let notes = localStorage.getItem("notes");
 
     if(notes == null){
@@ -13,10 +13,16 @@ addBtn.addEventListener('click',(e)=>{
         notesObj = JSON.parse(notes);
 
     }
-    notesObj.push(text.value);
+
+    let notesDetails = {
+        title: addTitle.value,
+        text: addText.value
+    }
+    notesObj.push(notesDetails);
 
     localStorage.setItem("notes",JSON.stringify(notesObj));
-    text.value ='';
+    addTitle.value = '';
+    addText.value = '';
     //console.log(text);
     showNotes();
 })
@@ -33,11 +39,12 @@ function showNotes() {
     let html = "";
     notesObj.forEach(function(element, index) {
       html += `
-              <div class="noteCard my-2 mx-2 card" style="width: 18rem;">
+              <div class="noteCard my-2 mx-2 card" style="width: 20rem;" id="${index + "card"}">
                       <div class="card-body">
-                          <h5 class="card-title">Note ${index + 1}</h5>
-                          <p class="card-text"> ${element}</p>
-                          <button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                          <h5 class="card-title">${element.title}</h5>
+                          <p class="card-text"> ${element.text}</p>
+                          <button id="${index}"onclick="deleteNote(this.id)" class="btn btn-danger my-2">Delete Note</button>
+                          
                       </div>
                   </div>`;
     });
@@ -65,6 +72,18 @@ function showNotes() {
     showNotes();
 
   }
+
+//   function markImportant(index){
+ 
+//     let selector = index + 'card'
+//     console.log(selector)
+//     let element = document.getElementById(selector);
+//     element.style.backgroundColor = 'red';
+//     console.log(element)
+//     // localStorage.setItem("notes",JSON.stringify(notesObj));
+    
+
+//   }
 
 
   let search = document.getElementById('searchTxt');
